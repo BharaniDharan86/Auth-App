@@ -7,7 +7,9 @@ const mongoose = require("mongoose");
 const DBURL = process.env.DB_URL;
 
 mongoose
-  .connect(DBURL)
+  .connect(DBURL, {
+    writeConcern: { w: "majority" },
+  })
   .then((con) => {
     console.log("connected");
   })
