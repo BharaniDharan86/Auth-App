@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const SignUp = () => {
   const [formData, setFormData] = useState({});
+  const navigate = useNavigate();
   function handleChange(e) {
     setFormData({ ...formData, [e.target.id]: e.target.value });
   }
@@ -22,6 +23,7 @@ const SignUp = () => {
       );
 
       console.log(postData);
+      navigate("/");
     } catch (error) {
       console.log(error);
     } finally {
