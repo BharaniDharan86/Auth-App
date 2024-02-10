@@ -1,9 +1,15 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { failed, start, success } from "../utils/authSlice";
 
 const SignUp = () => {
   const [formData, setFormData] = useState({});
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const user = useSelector((store) => store.auth);
+
   function handleChange(e) {
     setFormData({ ...formData, [e.target.id]: e.target.value });
   }
@@ -11,6 +17,7 @@ const SignUp = () => {
     e.preventDefault();
 
     try {
+      dispatch(start());
       const postData = await fetch(
         "http://localhost:3000/api/v1/user/sign-up",
         {
@@ -22,10 +29,12 @@ const SignUp = () => {
         }
       );
 
-      console.log(postData);
+      const res = postData.json();
+      dispatch(success(res));
       navigate("/");
+      
     } catch (error) {
-      console.log(error);
+      dispatch(failed(error.message));
     } finally {
       setFormData({});
     }

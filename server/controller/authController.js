@@ -33,6 +33,7 @@ exports.signUp = catchAsyncErr(async (req, res, next) => {
 exports.signIn = async (req, res, next) => {
   // get the email and password from the user
   const { email, password } = req.body;
+  console.log(email, password);
 
   if (!email || !password) {
     next(new AppError("Invalid Credentials", 400));
@@ -44,7 +45,6 @@ exports.signIn = async (req, res, next) => {
 
   const isValidUser = bcrypt.compareSync(password, user.password);
   if (!isValidUser) {
-    console.log(isValidUser);
     return next(new AppError("Invalid Email or Password", 404));
   }
   //if the user found send the token
@@ -53,5 +53,7 @@ exports.signIn = async (req, res, next) => {
   return res.cookie("access_token", token).status(200).json({
     status: "success",
     message: "Login In Successfully",
+    token: token,
+    user,
   });
 };

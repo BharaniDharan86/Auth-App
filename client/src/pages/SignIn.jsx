@@ -1,16 +1,25 @@
-import { useState } from "react";
+/* eslint-disable react/no-unescaped-entities */
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-
+import { failed, start, success } from "../utils/authSlice";
+import { useSelector, useDispatch } from "react-redux";
 function SignIn() {
   const [formData, setFormData] = useState({});
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const user = useSelector((store) => store.auth);
 
   function handleChange(e) {
     setFormData({ ...formData, [e.target.id]: e.target.value });
   }
+
+  useEffect(() => {
+    console.log(user);
+  }, [user]);
   async function handleSubmit(e) {
     e.preventDefault();
     try {
+      dispatch(start());
       const res = await fetch("http://localhost:3000/api/v1/user/sign-in", {
         method: "POST",
         headers: {
@@ -23,9 +32,14 @@ function SignIn() {
         throw new Error("Something Went Wrong");
       }
 
+      const data = await res.json();
+
+      dispatch(success(data));
+      // console.log(user);
+
       navigate("/");
     } catch (error) {
-      console.log(error.message);
+      dispatch(failed(error.message));
     }
   }
 
