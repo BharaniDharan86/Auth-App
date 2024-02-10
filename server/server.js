@@ -7,14 +7,13 @@ const mongoose = require("mongoose");
 const DBURL = process.env.DB_URL;
 
 mongoose
-  .connect(DBURL, {
-    writeConcern: { w: "majority" },
-  })
+  .connect(DBURL)
   .then((con) => {
     console.log("connected");
   })
   .catch((err) => {
     console.log("Error");
+    console.log(err);
   });
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
