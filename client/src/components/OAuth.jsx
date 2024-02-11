@@ -43,7 +43,8 @@ function OAuth() {
       });
 
       const data = await response.json();
-      dispatch(success(data.newUser));
+      console.log(data);
+      dispatch(success(data.users));
     } catch (error) {
       console.log(error);
     }

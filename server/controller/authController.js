@@ -78,14 +78,14 @@ exports.google = catchAsyncErr(async (req, res, next) => {
 
     return res.cookie("access_token", token).status(200).json({
       status: "success",
-      newUser,
+      users: newUser,
     });
   } else {
     const token = createJWT(currUser._id);
 
     return res.cookie("access_token", token).status(200).json({
       status: "success",
-      newUser,
+      users: currUser,
     });
   }
 });
