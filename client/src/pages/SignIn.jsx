@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { failed, start, success } from "../utils/authSlice";
 import { useSelector, useDispatch } from "react-redux";
+import OAuth from "../components/OAuth";
 function SignIn() {
   const [formData, setFormData] = useState({});
   const navigate = useNavigate();
@@ -46,7 +47,7 @@ function SignIn() {
   return (
     <div>
       <h1 className="text-3xl text-center font-semibold mb-3 mt-3 text-[#2e1065]">
-        Sign Up
+        Sign In
       </h1>
 
       <form
@@ -72,8 +73,9 @@ function SignIn() {
           type="submit"
           className="btn btn-block bg-[#4c1d95] text-[#f5f3ff] hover:bg-[#7c3aed] transition-all"
         >
-          Sign Up
+          Sign In
         </button>
+        <OAuth />
         <div className="flex gap-2 text-l">
           <p className="text-stone-900 font-semibold ">Don't have an account</p>
           <Link to="/sign-up" className="underline">

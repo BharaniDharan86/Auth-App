@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { failed, start, success } from "../utils/authSlice";
+import OAuth from "../components/OAuth";
 
 const SignUp = () => {
   const [formData, setFormData] = useState({});
@@ -32,7 +33,6 @@ const SignUp = () => {
       const res = postData.json();
       dispatch(success(res));
       navigate("/");
-      
     } catch (error) {
       dispatch(failed(error.message));
     } finally {
@@ -78,6 +78,7 @@ const SignUp = () => {
         >
           Sign Up
         </button>
+        <OAuth />
         <div className="flex gap-2 text-l">
           <p className="text-stone-900 font-semibold ">Have an Account ?</p>
           <Link to="/sign-in" className="underline">

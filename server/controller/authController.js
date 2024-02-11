@@ -3,6 +3,7 @@ const User = require("../model/userModel");
 const catchAsyncErr = require("../utils/catchAsyncErr");
 const AppError = require("../utils/error");
 const createJWT = require("../utils/createToken");
+const generateRandomPassword = require("../utils/generatePassword");
 
 exports.signUp = catchAsyncErr(async (req, res, next) => {
   const { password, email, username } = req.body;
@@ -57,3 +58,34 @@ exports.signIn = async (req, res, next) => {
     user,
   });
 };
+
+exports.google = catchAsyncErr(async (req, res, next) => {
+  const { email, username, photoUrl } = req.body;
+
+  const currUser = await User.findOne({ email });
+
+  if (!currUser) {
+    const password = generateRandomPassword(12);
+    const hashedPassword = bcrypt.hashSync(password, 12);
+    const newUser = await User.create({
+      email,
+      password: hashedPassword,
+      username,
+      photoUrl,
+    });
+
+    const token = createJWT(newUser._id);
+
+    return res.cookie("access_token", token).status(200).json({
+      status: "success",
+      newUser,
+    });
+  } else {
+    const token = createJWT(currUser._id);
+
+    return res.cookie("access_token", token).status(200).json({
+      status: "success",
+      newUser,
+    });
+  }
+});
